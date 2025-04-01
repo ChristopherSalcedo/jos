@@ -7,11 +7,13 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #87CEFA, #B0E0E6);
             text-align: center;
             padding: 20px;
             overflow-y: auto;
             height: 100vh;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png'), #001f3d; /* Fondo con estrellas */
+            background-size: cover;
+            transition: background 0.5s;
         }
         .container {
             display: flex;
@@ -28,32 +30,24 @@
             box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
             max-width: 400px;
             width: 100%;
-            border: 4px solid #1E90FF;
-            background: linear-gradient(145deg, #ffffff, #87CEFA);
-        }
-        .dedicatoria {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px auto;
-            max-width: 600px;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-            font-size: 18px;
-            color: #333;
         }
         .gallery {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            gap: 5px;
             justify-content: center;
-            gap: 10px;
             margin-top: 20px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .gallery img {
-            width: 150px;
-            height: 150px;
+            width: 60px;
+            height: 60px;
             border-radius: 10px;
             object-fit: cover;
-            border: 3px solid #1E90FF;
+            border: 3px solid;
             transition: transform 0.3s;
         }
         .gallery img:hover {
@@ -63,9 +57,6 @@
 </head>
 <body>
     <h1>Para Jos, el Amor de mi Vida</h1>
-    
-    <!-- 🌸 Dedicatoria especial -->
-    
     <div class="container">
         <div class="card">
             <p>Mi amado Jos, cada día a tu lado es un regalo que ilumina mi vida. 
@@ -73,45 +64,45 @@
                 <br><strong>Eres mi alegría, mi paz y mi más grande bendición. Te amo con todo mi corazón. 💕</strong></p>
         </div>
     </div>
-    
     <div class="gallery" id="gallery"></div>
-    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const gallery = document.getElementById("gallery");
             const folderPath = "imagenes/";
-            const maxImages = 52;
-            let failedAttempts = 0;
 
-            function loadImages() {
-                for (let i = 1; i <= maxImages; i++) {
-                    if (failedAttempts >= 3) {
-                        console.log("Se han agotado los intentos. Deteniendo la carga.");
-                        break;
-                    }
+            // Matriz que representa las letras "J" y "C"
+            const pattern = [
+                "1110001110", // Primera fila
+                "0100001000", // Segunda fila
+                "0100001000", // Tercera fila
+                "0100001000", // Cuarta fila
+                "0100001000", // Quinta fila
+                "0100001000", // Sexta fila
+                "0100001000", // Séptima fila
+                "0100101000", // Octava fila
+                "0111101110", // Novena fila
+                "0000000000"  // Décima fila
+            ];
 
-                    let img = document.createElement("img");
-                    img.alt = `Imagen ${i}`;
-                    img.src = `${folderPath}imagen${i}.jpg`;
+            // Variable para controlar el índice de las imágenes
+            let imgIndex = 1;
 
-                    img.onload = function () {
+            pattern.forEach((row, rowIndex) => {
+                row.split('').forEach((cell, colIndex) => {
+                    if (cell === "1" && imgIndex <= 52) {
+                        let img = document.createElement("img");
+                        img.alt = `Imagen ${imgIndex}`;
+                        img.src = `${folderPath}imagen${imgIndex}.jpeg`;
                         gallery.appendChild(img);
-                        failedAttempts = 0;
-                    };
-
-                    img.onerror = function () {
-                        console.log(`No se encontró: imagen${i}.jpg, probando con imagen${i}.jpeg`);
-                        img.src = `${folderPath}imagen${i}.jpeg`;
-
-                        img.onerror = function () {
-                            console.log(`No se encontró: imagen${i}.jpeg (Intento ${failedAttempts + 1} de 3)`);
-                            failedAttempts++;
-                        };
-                    };
-                }
-            }
-
-            loadImages();
+                        imgIndex++; // Aumentamos el índice para la siguiente imagen
+                    } else {
+                        let emptySpace = document.createElement("div");
+                        emptySpace.style.width = "60px";
+                        emptySpace.style.height = "60px";
+                        gallery.appendChild(emptySpace);
+                    }
+                });
+            });
         });
     </script>
 </body>
